@@ -8,7 +8,10 @@ public class ClickToMove : MonoBehaviour
     [SerializeField]
     private InputAction mouseClickAction;
     [SerializeField]
-    private float playerSpeed = 10f;
+    public float normalSpeed = 10f;
+    public float colliedSpeed = 2f;
+    [SerializeField]
+    private float rotationSpeed = 5f;
     private Camera mainCamera;
     private Coroutine coroutine;
 
@@ -46,12 +49,15 @@ public class ClickToMove : MonoBehaviour
         target.y += playerDistanceToFloor;
         while(Vector3.Distance(transform.position, target) > 0.1f)
         {
-            Vector3 destination = Vector3.MoveTowards(transform.position, target, playerSpeed * Time.deltaTime);
+            Vector3 destination = Vector3.MoveTowards(transform.position, target, normalSpeed * Time.deltaTime);
             //transform.position = destination;
 
             Vector3 direction = target - transform.position;
-            Vector3 movement = direction.normalized * playerSpeed * Time.deltaTime;
+            direction.y = 0;
+            Vector3 movement = direction.normalized * normalSpeed * Time.deltaTime;
             characterController.Move(movement);
+
+            transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(direction.normalized), rotationSpeed * Time.deltaTime);
 
             yield return null;
         }
