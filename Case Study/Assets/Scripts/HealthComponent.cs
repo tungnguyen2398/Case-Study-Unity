@@ -7,7 +7,6 @@ public class HealthComponent : MonoBehaviour
     public float Hp;
     public float maxHp;
     public HealthUI healthUI;
-    private UnitSpawner spawn;
     public void SetHp(float hp)
     {
         this.maxHp = hp;
